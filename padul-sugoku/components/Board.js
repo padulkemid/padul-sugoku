@@ -6,34 +6,38 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useSugokuBoard, useSugokuSolve, useSugokuValidate } from '../hooks';
+import { dispatchSolvedBoard, dispatchValidation } from '../store/actions/sugoku_actions';
 
 export default () => {
-  const game = useSugokuBoard();
+  const { unsolvedBoard, solvedBoard, validated } = useSelector((state) => state.sugokuReducer);
   const [board, setBoard] = useState([]);
-  const [validate, setValidate] = useState(false);
-  const undoGame = game;
+  const [validation, setValidation] = useState(false);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  let undoGame = unsolvedBoard;
 
   useEffect(() => {
-    setBoard(game);
-  }, [game]);
+    setBoard(unsolvedBoard);
+    setValidation(validated);
+  }, [unsolvedBoard, validated]);
 
   const solveBoard = () => {
-    useSugokuSolve(game).then((solution) => {
-      setBoard(solution);
-    });
+    dispatch(dispatchSolvedBoard(unsolvedBoard));
+    setBoard(solvedBoard);
+  };
+
+  const updateBoard = (i, j, val) => {
+    console.log({ i, j, val });
   };
 
   const validateBoard = () => {
-    useSugokuValidate(board).then((res) => {
-      if (res === 'unsolved') {
-        setValidate(false);
-      } else {
-        setValidate(true);
-      }
-    });
+    dispatch(dispatchValidation(board));
   };
 
   const undoBoard = () => {
@@ -51,7 +55,10 @@ export default () => {
                   {perRow ? (
                     <Text style={styles.cell}>{perRow}</Text>
                   ) : (
-                    <TextInput style={styles.cell} value={perRow} maxLength={1}></TextInput>
+                    <TextInput
+                      onChangeText={(content) => updateBoard(i, j, content)}
+                      style={styles.cell}
+                      maxLength={1}></TextInput>
                   )}
                 </View>
               ))}
@@ -62,15 +69,15 @@ export default () => {
         )}
       </View>
       <TouchableOpacity style={styles.button} onPress={solveBoard}>
-        <Text style={{ padding: 5, color: 'white' }}>Solve</Text>
+        <Text style={styles.buttonText}>Solve</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={undoBoard}>
-        <Text style={{ padding: 5, color: 'white' }}>Undo</Text>
+        <Text style={styles.buttonText}>Undo</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={validateBoard}>
-        <Text style={{ padding: 5, color: 'white' }}>Validate</Text>
+        <Text style={styles.buttonText}>Finish</Text>
       </TouchableOpacity>
-      <Text>Validation result : {validate ? 'solved' : 'unsolved'} </Text>
+      <Text style={styles.validation}>{validation ? '- solved -' : '- unsolved -'}</Text>
     </>
   );
 };
@@ -97,6 +104,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     padding: 2,
     margin: 5,
+  },
+  buttonText: {
+    padding: 5,
+    color: 'white',
+    width: 100,
+    textAlign: 'center',
+  },
+  validation: {
+    marginTop: 20,
+    fontSize: 20,
+    fontStyle: 'italic',
   },
   board: {
     margin: 2,
