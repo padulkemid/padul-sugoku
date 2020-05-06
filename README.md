@@ -21,12 +21,14 @@ A _legendary_ game, where you just ...
 
 ## Screens 📱! 
 
-<div style="flex-direction:row">
-  <img src="https://i.imgur.com/TZc1vW2.png" alt="screen_1" width="260">
-  <img src="https://i.imgur.com/S7OJ3dD.png" alt="screen_2" width="260">
-</div>
-<div style="flex-direction:row">
-  <img src="https://i.imgur.com/A6oP852.png" alt="screen_3" width="260">
-  <img src="https://i.imgur.com/MOwKhvI.png" alt="screen_4" width="260">
+  <div style="display: flex; align-items: center; justify-content: center">
+  <div style="flex-direction: row">
+    <img src="https://i.imgur.com/TZc1vW2.png" alt="screen_1" width="260">
+    <img src="https://i.imgur.com/S7OJ3dD.png" alt="screen_2" width="260">
+  </div>
+  <div style="flex-direction: row">
+    <img src="https://i.imgur.com/A6oP852.png" alt="screen_3" width="260">
+    <img src="https://i.imgur.com/MOwKhvI.png" alt="screen_4" width="260">
+  </div>
 </div>
 
