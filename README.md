@@ -21,8 +21,8 @@ A _legendary_ game, where you just ...
 
 ## Screens 📱! 
 
-  ![screen_1](https://i.imgur.com/TZc1vW2.png)
-  ![screen_2](https://i.imgur.com/S7OJ3dD.png)
-  ![screen_3](https://i.imgur.com/A6oP852.png)
-  ![screen_4](https://i.imgur.com/MOwKhvI.png)
+  <img src="https://i.imgur.com/TZc1vW2.png" alt="screen_1" width="260">
+  <img src="https://i.imgur.com/S7OJ3dD.png" alt="screen_2" width="260">
+  <img src="https://i.imgur.com/A6oP852.png" alt="screen_3" width="260">
+  <img src="https://i.imgur.com/MOwKhvI.png" alt="screen_4" width="260">
 
