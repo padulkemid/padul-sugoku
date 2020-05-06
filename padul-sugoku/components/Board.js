@@ -13,8 +13,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { dispatchSolvedBoard, dispatchValidation } from '../store/actions/sugoku_actions';
 
-export default () => {
+export default (props) => {
   const { unsolvedBoard, solvedBoard, validated } = useSelector((state) => state.sugokuReducer);
+  const { uname } = props;
   const [board, setBoard] = useState([]);
   const [validation, setValidation] = useState(false);
   const navigation = useNavigation();
@@ -23,12 +24,12 @@ export default () => {
   let undoGame = unsolvedBoard;
 
   useEffect(() => {
+    dispatch(dispatchSolvedBoard(unsolvedBoard));
     setBoard(unsolvedBoard);
     setValidation(validated);
   }, [unsolvedBoard, validated]);
 
   const solveBoard = () => {
-    dispatch(dispatchSolvedBoard(unsolvedBoard));
     setBoard(solvedBoard);
   };
 
@@ -38,6 +39,32 @@ export default () => {
 
   const validateBoard = () => {
     dispatch(dispatchValidation(board));
+    Alert.alert(
+      'Yeap!',
+      `Board has been validated! \n Should the game finished it'll reset its state`,
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      { cancelable: false }
+    );
+  };
+
+  const finishGame = () => {
+    if (!validation) {
+      Alert.alert(
+        'Whoops!',
+        'Please validate the game first, or finish the game!',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      navigation.navigate('Finish', { uname });
+    }
   };
 
   const undoBoard = () => {
@@ -68,16 +95,25 @@ export default () => {
           <ActivityIndicator size="large" color="white"></ActivityIndicator>
         )}
       </View>
-      <TouchableOpacity style={styles.button} onPress={solveBoard}>
-        <Text style={styles.buttonText}>Solve</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={undoBoard}>
-        <Text style={styles.buttonText}>Undo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={validateBoard}>
-        <Text style={styles.buttonText}>Finish</Text>
-      </TouchableOpacity>
-      <Text style={styles.validation}>{validation ? '- solved -' : '- unsolved -'}</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity style={styles.button} onPress={solveBoard}>
+          <Text style={styles.buttonText}>Solve</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={validateBoard}>
+          <Text style={styles.buttonText}>Validate</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity style={styles.button} onPress={undoBoard}>
+          <Text style={styles.buttonText}>Undo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={finishGame}>
+          <Text style={styles.buttonText}>Finish</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.validation}>Result</Text>
+      <Text style={styles.validation}>{validation ? '- solved -' : '- Not yet solved -'}</Text>
     </>
   );
 };
@@ -100,10 +136,18 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   button: {
+    borderColor: 'black',
+    borderWidth: 1,
+    borderStyle: 'solid',
     alignItems: 'center',
     backgroundColor: 'red',
     padding: 2,
     margin: 5,
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    shadowOpacity: 0.8,
+    elevation: 6,
+    shadowRadius: 5,
+    shadowOffset: { width: 1, height: 13 },
   },
   buttonText: {
     padding: 5,

@@ -22,11 +22,8 @@ export default ({ route }) => {
         <Text style={styles.centerText}>
           Difficulty: <Text style={styles.bold}>{difficulty}</Text>
         </Text>
-        <Text>
-          <Text style={styles.bold}>Sugoku</Text> in React Native{' '}
-        </Text>
       </View>
-      <Board />
+      <Board uname={uname} />
     </View>
   );
 };

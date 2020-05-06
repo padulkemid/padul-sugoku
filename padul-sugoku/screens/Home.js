@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Picker, View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 export default ({ navigation }) => {
@@ -31,7 +31,7 @@ export default ({ navigation }) => {
         ],
         { cancelable: false }
       );
-    } else if (!difficulty.length) {
+    } else if (!difficulty || !difficulty.length) {
       Alert.alert(
         'Yikes!',
         'Please select your difficulty!',
@@ -55,65 +55,96 @@ export default ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>
-        Please input your <Text style={styles.bold}>username</Text>
+      <Image source={require('../assets/sudoku.png')} style={styles.image}></Image>
+      <Text style={styles.centerText}>
+        Welcome! {'\n'} Please input your <Text style={styles.bold}>username</Text>
       </Text>
       <TextInput
+        placeholder="username.."
         onChangeText={(content) => handleUnameInput(content)}
         style={styles.input}></TextInput>
       <Text>Select your difficulty</Text>
-      <RNPickerSelect
-        onValueChange={(value) => handleDifficulty(value)}
-        style={styles.picker}
-        items={[
-          { label: 'Easy peasy', value: 'easy' },
-          { label: 'Mediumm huhh', value: 'medium' },
-          { label: 'uLtRa HAAAARD', value: 'hard' },
-        ]}
-      />
+      <View style={styles.picker}>
+        <RNPickerSelect
+          placeholder={{ label: 'Select one level..', value: null }}
+          onValueChange={(value) => handleDifficulty(value)}
+          items={[
+            { label: 'Easy peasy', value: 'easy' },
+            { label: 'Mediumm huhh', value: 'medium' },
+            { label: 'uLtRa HAAAARD', value: 'hard' },
+          ]}
+        />
+      </View>
       <TouchableOpacity onPress={startGame}>
         <Text style={styles.button}> Start </Text>
       </TouchableOpacity>
-      <Text> Your username : {uname}</Text>
-      <Text> Your difficulty : {difficulty}</Text>
+      <View style={styles.footer}>
+        <Text style={{ margin: 5 }}> Your username</Text>
+        <Text style={{ fontWeight: 'bold', color: 'white' }}>{uname}</Text>
+        <Text style={{ margin: 5 }}> Your difficulty</Text>
+        <Text style={{ fontWeight: 'bold', color: 'white' }}>{difficulty}</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.5,
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
+  },
+  image: {
+    height: 150,
+    width: 150,
   },
   input: {
     padding: 5,
-    margin: 10,
     borderWidth: 1,
     borderColor: 'black',
     borderStyle: 'solid',
-    width: 100,
+    backgroundColor: 'white',
+    width: 150,
   },
   picker: {
-    margin: 10,
     padding: 5,
     fontSize: 20,
     borderWidth: 1,
     borderColor: 'black',
     borderStyle: 'solid',
-    color: 'black',
-    textAlign: 'center',
+    borderRadius: 10,
+    color: 'white',
+    width: 200,
+    backgroundColor: 'red',
   },
   button: {
-    backgroundColor: 'red',
     color: 'white',
-    margin: 15,
-    padding: 2,
+    padding: 10,
+    width: 200,
     borderWidth: 1,
     borderColor: 'black',
     borderStyle: 'solid',
+    textAlign: 'center',
+    backgroundColor: 'red',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    shadowOpacity: 0.8,
+    elevation: 6,
+    shadowRadius: 5,
+    shadowOffset: { width: 1, height: 13 },
   },
   bold: {
     fontWeight: 'bold',
+  },
+  centerText: {
+    textAlign: 'center',
+  },
+  footer: {
+    alignItems: 'center',
+    backgroundColor: 'red',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'black',
+    width: 200,
+    padding: 10,
   },
 });
