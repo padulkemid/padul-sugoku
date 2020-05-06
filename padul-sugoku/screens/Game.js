@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { Board } from '../components';
 import { dispatchUnsolvedBoard } from '../store/actions/sugoku_actions';
+
+const leaderboardArr = AsyncStorage.getItem('leaderboard');
 
 export default ({ route }) => {
   const { uname, difficulty } = route.params;
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!leaderboardArr) {
+      AsyncStorage.setItem('leaderboard', []);
+    }
     dispatch(dispatchUnsolvedBoard(difficulty));
   }, [difficulty]);
 

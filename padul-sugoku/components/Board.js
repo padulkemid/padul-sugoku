@@ -7,6 +7,7 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,7 +64,15 @@ export default (props) => {
         { cancelable: false }
       );
     } else {
-      navigation.navigate('Finish', { uname });
+      AsyncStorage.getItem('leaderboard')
+        .then((req) => JSON.parse(req))
+        .then((unames) => {
+          let tempUnames = unames;
+          tempUnames.push(uname);
+
+          return AsyncStorage.setItem('leaderboard', JSON.stringify(tempUnames));
+        })
+        .then((_) => navigation.navigate('Finish', { uname }));
     }
   };
 
