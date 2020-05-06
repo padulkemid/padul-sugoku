@@ -36,6 +36,9 @@ export default (props) => {
 
   const updateBoard = (i, j, val) => {
     console.log({ i, j, val });
+
+    // tadinya buat input manual bang, tapi sepertinya buat ngisi puzzle nya kelamaan
+    // yauda akhirnya aku buat fungsi 'solve' biar cepet kelar
   };
 
   const validateBoard = () => {

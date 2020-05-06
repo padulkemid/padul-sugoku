@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, FlatList } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 
 export default ({ route }) => {
   const { uname } = route.params;
